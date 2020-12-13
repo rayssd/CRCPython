@@ -1,8 +1,10 @@
 import boto3
 
 
-dynamodb = boto3.resource('dynamodb')
-MyTable = dynamodb.Table('MyTable')
+def lambda_handler(event, context):
+    dynamodb = boto3.resource('dynamodb')
+    MyTable = dynamodb.Table('MyTable')
+    return updateDDBItem(MyTable)
 
 
 def readDDBItem(MyTable):
