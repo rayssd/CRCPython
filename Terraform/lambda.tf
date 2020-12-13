@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "VisitorCounter" {
-  function_name    = "VistorCounter"
+  function_name    = "VisitorCounter"
   role             = aws_iam_role.MyLambdaRole.arn
   runtime          = "python3.7"
   handler          = "dynamodb.lambda_handler"
@@ -25,3 +25,4 @@ resource "aws_iam_role" "MyLambdaRole" {
         }
     EOF
 }
+
