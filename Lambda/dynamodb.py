@@ -11,12 +11,12 @@ def readDDBItem(MyTable):
             'Visit': 1  # reading the value(s) of primary key ID 1
         }
     )
-    return response
+    return response['Item']['Counter']
 
 
 def updateDDBItem(MyTable):
     response = readDDBItem(MyTable)
-    value = response['Item']['Counter'] + 1
+    value = response + 1
 
     MyTable.update_item(
         Key={
@@ -30,8 +30,9 @@ def updateDDBItem(MyTable):
         },
         UpdateExpression="set #gibberish = :anyname",
     )
+    return value
 
 
-print(readDDBItem(MyTable)['Item']['Counter'])
-updateDDBItem(MyTable)
-print(readDDBItem(MyTable)['Item']['Counter'])
+# print(readDDBItem(MyTable))
+# updateDDBItem(MyTable)
+# print(readDDBItem(MyTable)['Item']['Counter'])
