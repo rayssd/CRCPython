@@ -11,7 +11,7 @@ resource "aws_iam_role" "MyLambdaRole" {
   name = "MyLambdaRole"
 
   assume_role_policy = <<EOF
-      {
+{
         "Version"   : "2012-10-17",
         "Statement" : [
                 {
@@ -66,9 +66,13 @@ resource "aws_iam_policy" "MyLambdaPolicy" {
   )
 }
 
+resource "aws_iam_role_policy_attachment" "Role_Policy_Attachment" {
+  role       = aws_iam_role.MyLambdaRole.name
+  policy_arn = aws_iam_policy.MyLambdaPolicy.arn
+}
 
 resource "aws_lambda_permission" "Lambda_APIGW" {
-  # statement_id = "AllowAPIGatewayInvocation"
+  statement_id  = "AllowAPIGatewayInvocation"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.VisitorCounter.arn
   principal     = "apigateway.amazonaws.com"
