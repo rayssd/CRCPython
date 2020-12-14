@@ -26,3 +26,51 @@ resource "aws_iam_role" "MyLambdaRole" {
     EOF
 }
 
+resource "aws_iam_policy" "MyLambdaPolicy" {
+  # arn  = "arn:aws:iam::319523825307:policy/MyLambdaPolicy"
+  # id   = "arn:aws:iam::319523825307:policy/MyLambdaPolicy"
+  name = "MyLambdaPolicy"
+  path = "/"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "dynamodb:BatchGetItem",
+            "dynamodb:GetItem",
+            "dynamodb:Query",
+            "dynamodb:Scan",
+            "dynamodb:BatchWriteItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:dynamodb:ap-southeast-2:319523825307:table/MyTable"
+        },
+        {
+          Action = [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:logs:eu-west-1:123456789012:*"
+        },
+        {
+          Action   = "logs:CreateLogGroup"
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+
+resource "aws_lambda_permission" "Lambda_APIGW" {
+  # statement_id = "AllowAPIGatewayInvocation"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.VisitorCounter.arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.VisitorCounterAPI.execution_arn}/*/*/${aws_lambda_function.VisitorCounter.function_name}"
+}
