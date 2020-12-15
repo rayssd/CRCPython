@@ -1,10 +1,12 @@
 resource "aws_lambda_function" "VisitorCounter" {
-  function_name    = "VisitorCounter"
-  role             = aws_iam_role.MyLambdaRole.arn
-  runtime          = "python3.7"
-  handler          = "dynamodb.lambda_handler"
-  filename         = data.archive_file.zip.output_path
-  source_code_hash = data.archive_file.zip.output_base64sha256
+  function_name = "VisitorCounter"
+  role          = aws_iam_role.MyLambdaRole.arn
+  runtime       = "python3.7"
+  handler       = "dynamodb.lambda_handler"
+  # filename         = data.archive_file.zip.output_path
+  # source_code_hash = data.archive_file.zip.output_base64sha256
+  s3_bucket = "terraform-lambda-payload"
+  s3_key    = "lambda_payload.zip"
 }
 
 resource "aws_iam_role" "MyLambdaRole" {
