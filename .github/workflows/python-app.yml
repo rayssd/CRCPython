@@ -51,6 +51,16 @@ jobs:
         run: |
           pytest
 
+      - name: Zip up the package
+        run: |
+          zip ../lambda_payload.zip dynamodb.py
+
+      - name: Upload package to S3
+        uses: prewk/s3-cp-action@master
+        env:
+          SOURCE: "./lambda_payload.zip"
+          DEST: "s3://terraform-lambda-payload/lambda_payload.zip"
+
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -71,6 +81,8 @@ jobs:
 
         # On push to master, build or change infrastructure according to Terraform configuration files
         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+
+        # Terraform Cloud does not allow "terraform apply", must follow VCS-driven workflow. Manually confirm and apply on Terraform Cloud portal instead
+        # - name: Terraform Apply
+        #   if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        #   run: terraform apply -auto-approve
