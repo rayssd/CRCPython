@@ -25,12 +25,12 @@ def updateDDBItem(MyTable):
             'Visit': 1
         },
         ExpressionAttributeNames={
-            "#gibberish": "Counter"  # has to have a # in front of variable name
+            "#callitwhatever": "Counter"  # has to have a # in front of variable name
         },
         ExpressionAttributeValues={
-            ':anyname': value,  # has to have : in front of variable name
+            ':randomval': value,  # has to have : in front of variable name
         },
-        UpdateExpression="set #gibberish = :anyname",
+        UpdateExpression="set #callitwhatever = :randomval",
     )
     return value
 
