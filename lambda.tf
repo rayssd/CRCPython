@@ -5,8 +5,14 @@ resource "aws_lambda_function" "VisitorCounter" {
   handler       = "dynamodb.lambda_handler"
   # filename         = data.archive_file.zip.output_path
   # source_code_hash = data.archive_file.zip.output_base64sha256
-  s3_bucket = "terraform-lambda-payload"
-  s3_key    = "lambda_payload.zip"
+  s3_bucket         = data.aws_s3_bucket_object.lambda.bucket
+  s3_key            = data.aws_s3_bucket_object.lambda.key
+  s3_object_version = data.aws_s3_bucket_object.lambda.version_id
+}
+
+data "aws_s3_bucket_object" "lambda" {
+  bucket = "terraform-lambda-payload"
+  key    = "lambda_payload.zip"
 }
 
 resource "aws_iam_role" "MyLambdaRole" {
