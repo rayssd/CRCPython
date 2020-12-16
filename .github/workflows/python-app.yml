@@ -53,7 +53,7 @@ jobs:
 
       - name: Zip up the package
         run: |
-          zip ../lambda_payload.zip dynamodb.py
+          zip ../lambda_payload.zip ./Lambda/dynamodb.py
 
       - name: Upload package to S3
         uses: prewk/s3-cp-action@master
