@@ -9,7 +9,7 @@ resource "aws_apigatewayv2_api" "VisitorCounterAPI" {
     allow_headers     = []
     allow_methods     = []
     allow_origins = [
-      "*",
+      "http://my-cloud-resume.s3-website-ap-southeast-2.amazonaws.com/",
     ]
     expose_headers = []
     max_age        = 0
